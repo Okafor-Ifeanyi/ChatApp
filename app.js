@@ -7,6 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", require("./routers/user.router"));
+app.use("/chatroom", require("./routers/chatroom.route"));
 
 app.use(errorHandlers.notFound);
 app.use(errorHandlers.mongoseErrors);
