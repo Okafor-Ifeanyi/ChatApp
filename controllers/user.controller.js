@@ -5,28 +5,35 @@ const jwt = require('jwt-then');
 require('dotenv').config()
 
 exports.register = async (req, res) => {
-    const {name, email, password} = req.body;
+//    try {
+        const {name, email, password} = req.body;
 
-    const emailRegex = /[@gmail.com|@yahoo.com|@hotmail.com|@live.com]$/;
+        const emailRegex = /[@gmail.com|@yahoo.com|@hotmail.com|@live.com]$/;
 
-    if(!emailRegex.test(email)) throw "Email is not supported"
+        if(!emailRegex.test(email)) throw "Email is not supported"
 
-    const email_found = await User.findOne({ email });
+        const email_found = await User.findOne({ email });
 
-    if (email_found) throw "User already exists"
- 
-    const user = new User({
-        name,
-        email,
-        password: sha256(password+ process.env.SALT),
-    })
+        if (email_found) throw "User already exists"
+    
+        const user = new User({
+            name,
+            email,
+            password: sha256(password+ process.env.SALT),
+        })
 
-    await user.save();
+        await user.save();
 
-    res.json({
-        success: true,
-        message: `User { ${name} } saved successfully`
-    })
+        res.json({
+            success: true,
+            message: `User { ${name} } saved successfully`
+        })
+//    } catch (error) {
+//         res.json({
+//             success: false,
+//             message: `Err: ${error}`
+//         });
+//    }
 }
 
 exports.login = async (req, res) => {
@@ -42,6 +49,6 @@ exports.login = async (req, res) => {
 
     res.json({
         token: token,
-        message: `{ ${email} } has been logged in successfully` 
+        message: `${email} has been logged in successfully` 
     });
 };
